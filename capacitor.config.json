@@ -1,0 +1,12 @@
+{
+  "appId": "com.minesweeper.game",
+  "appName": "Minesweeper",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "buildOptions": {
+      "keystorePath": "",
+      "keystoreAlias": ""
+    }
+  }
+}

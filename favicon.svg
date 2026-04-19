@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" fill="#2c3e50" rx="20"/>
+
+  <!-- Mine bomb -->
+  <circle cx="50" cy="50" r="20" fill="#e74c3c"/>
+
+  <!-- Spikes -->
+  <rect x="48" y="20" width="4" height="15" fill="#c0392b"/>
+  <rect x="48" y="65" width="4" height="15" fill="#c0392b"/>
+  <rect x="20" y="48" width="15" height="4" fill="#c0392b"/>
+  <rect x="65" y="48" width="15" height="4" fill="#c0392b"/>
+
+  <rect x="30" y="30" width="4" height="12" fill="#c0392b" transform="rotate(45 32 36)"/>
+  <rect x="66" y="30" width="4" height="12" fill="#c0392b" transform="rotate(-45 68 36)"/>
+  <rect x="30" y="58" width="4" height="12" fill="#c0392b" transform="rotate(-45 32 64)"/>
+  <rect x="66" y="58" width="4" height="12" fill="#c0392b" transform="rotate(45 68 64)"/>
+
+  <!-- Highlight -->
+  <circle cx="42" cy="42" r="6" fill="#ffffff" opacity="0.3"/>
+</svg>

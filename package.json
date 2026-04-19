@@ -1,0 +1,32 @@
+{
+  "name": "minesweeper",
+  "version": "1.0.0",
+  "description": "Minesweeper Game - Classic mine sweeping puzzle",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test core/**/*.test.js",
+    "dev": "python3 -m http.server 8000",
+    "build": "mkdir -p www && cp index.html app.js favicon.svg manifest.json sw.js www/ && cp -r core platform platforms www/",
+    "android:prepare": "npm run build && npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build": "npm run android:prepare && cd android && ./gradlew assembleDebug",
+    "android:release": "npm run android:prepare && cd android && ./gradlew assembleRelease"
+  },
+  "keywords": [
+    "minesweeper",
+    "game",
+    "puzzle",
+    "pwa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/cli": "^8.3.1",
+    "@capacitor/core": "^8.3.1"
+  }
+}

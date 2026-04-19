@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2c3e50">
+  <meta name="description" content="Classic minesweeper puzzle game - reveal all cells without hitting mines!">
+
+  <title>Minesweeper</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Minesweeper">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="platforms/web-dom/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="controls">
+      <div class="stat">
+        <span>🚩</span>
+        <span class="stat-value" id="mines-remaining">10</span>
+      </div>
+
+      <span class="icon">💣</span>
+
+      <select id="difficulty-select">
+        <option value="EASY">Easy</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="HARD">Hard</option>
+      </select>
+
+      <button id="reset-button" title="New Game">🔄</button>
+
+      <div class="stat">
+        <span>⏱️</span>
+        <span class="stat-value" id="timer">00:00</span>
+      </div>
+    </div>
+
+    <div id="board"></div>
+  </div>
+
+  <!-- App -->
+  <script type="module" src="app.js"></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {
+        // Ignore service worker errors
+      });
+    }
+  </script>
+</body>
+</html>

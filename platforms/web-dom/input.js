@@ -14,8 +14,11 @@ export class DOMInput {
     this.longPressConsumed = false;
     this.touchStartX = 0;
     this.touchStartY = 0;
-    this.longPressThreshold = 500; // ms
+    this.touchStartCell = null; // Store the cell that was touched
+    this.longPressThreshold = 400; // ms - reduced for easier flagging
     this.touchMoveThreshold = 10; // px
+    this.lastTouchTime = 0; // Track last touch to prevent click event
+    this.preventNextClick = false; // Additional flag to block clicks after long-press
   }
 
   /**
@@ -41,6 +44,18 @@ export class DOMInput {
   _setupDesktopInput() {
     // Left click to reveal
     this.boardElement.addEventListener('click', (e) => {
+      // Prevent click if it was triggered by touch event
+      if (this.preventNextClick) {
+        this.preventNextClick = false;
+        return;
+      }
+
+      // Ignore synthesized clicks from touch events (within 500ms of last touch)
+      const timeSinceTouch = Date.now() - this.lastTouchTime;
+      if (timeSinceTouch < 500) {
+        return;
+      }
+
       const cell = e.target.closest('.cell');
       if (cell) {
         const x = parseInt(cell.dataset.x, 10);
@@ -76,19 +91,23 @@ export class DOMInput {
       this.touchStartX = touch.clientX;
       this.touchStartY = touch.clientY;
       this.longPressConsumed = false;
-
-      const x = parseInt(cell.dataset.x, 10);
-      const y = parseInt(cell.dataset.y, 10);
+      this.touchStartCell = cell; // Store the cell that was touched
 
       // Start long-press timer
       this.longPressTimer = setTimeout(() => {
-        // Long-press triggered - flag
-        this.longPressConsumed = true;
-        this.events.emit('cell:rightclicked', { x, y });
+        // Long-press triggered - flag the originally touched cell
+        if (this.touchStartCell) {
+          const x = parseInt(this.touchStartCell.dataset.x, 10);
+          const y = parseInt(this.touchStartCell.dataset.y, 10);
 
-        // Haptic feedback if available
-        if (navigator.vibrate) {
-          navigator.vibrate(50);
+          this.longPressConsumed = true;
+          this.preventNextClick = true; // Block synthesized click event
+          this.events.emit('cell:rightclicked', { x, y });
+
+          // Haptic feedback if available
+          if (navigator.vibrate) {
+            navigator.vibrate(50);
+          }
         }
       }, this.longPressThreshold);
     }, { passive: true });
@@ -110,6 +129,9 @@ export class DOMInput {
 
     // Touch end - reveal if not consumed by long-press
     this.boardElement.addEventListener('touchend', (e) => {
+      // Track touch time to prevent synthesized click events
+      this.lastTouchTime = Date.now();
+
       // Cancel long-press timer if still running
       if (this.longPressTimer) {
         clearTimeout(this.longPressTimer);
@@ -119,6 +141,8 @@ export class DOMInput {
       // If long-press already consumed, don't emit click
       if (this.longPressConsumed) {
         this.longPressConsumed = false;
+        this.touchStartCell = null; // Clean up stored cell
+        this.preventNextClick = true; // Ensure synthesized click is blocked
         return;
       }
 
@@ -129,6 +153,9 @@ export class DOMInput {
         const y = parseInt(cell.dataset.y, 10);
         this.events.emit('cell:clicked', { x, y });
       }
+
+      // Clean up stored cell
+      this.touchStartCell = null;
     });
 
     // Touch cancel - cleanup
@@ -138,6 +165,7 @@ export class DOMInput {
         this.longPressTimer = null;
       }
       this.longPressConsumed = false;
+      this.touchStartCell = null;
     });
   }
 

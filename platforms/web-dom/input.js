@@ -19,9 +19,9 @@ export class DOMInput {
     this.activePointerId = null; // Track which pointer is active
     this.preventNextClick = false; // Block ghost clicks
 
-    // Tuning parameters
-    this.longPressThreshold = 450; // ms - standard long-press duration
-    this.moveCancelPx = 12; // px - movement threshold
+    // Tuning parameters (optimized for mobile flagging ease)
+    this.longPressThreshold = 300; // ms - SHORT for easy flagging
+    this.moveCancelPx = 20; // px - FORGIVING of hand tremor
     this.moveCancelPx2 = this.moveCancelPx * this.moveCancelPx; // squared for efficiency
   }
 
@@ -54,6 +54,10 @@ export class DOMInput {
     this.longPressConsumed = false;
     this.activePointerId = null;
     this.startCell = null;
+
+    // Remove visual feedback from all cells
+    const pressingCells = this.boardElement.querySelectorAll('.pressing');
+    pressingCells.forEach(cell => cell.classList.remove('pressing'));
   }
 
   /**
@@ -105,6 +109,11 @@ export class DOMInput {
         return;
       }
 
+      // Prevent default touch behavior (scrolling, text selection)
+      if (e.pointerType === 'touch') {
+        e.preventDefault();
+      }
+
       // Capture this pointer
       this.activePointerId = e.pointerId;
       this.startX = e.clientX;
@@ -115,6 +124,9 @@ export class DOMInput {
       };
       this.longPressConsumed = false;
 
+      // Visual feedback: add pressed state
+      cell.classList.add('pressing');
+
       // Start long-press timer
       this.longPressTimer = setTimeout(() => {
         if (!this.startCell) return;
@@ -124,9 +136,9 @@ export class DOMInput {
         this.preventNextClick = true;
         this.events.emit('cell:rightclicked', this.startCell);
 
-        // Haptic feedback
+        // Haptic feedback (stronger for successful flag)
         if (navigator.vibrate) {
-          navigator.vibrate(10);
+          navigator.vibrate(50);
         }
       }, this.longPressThreshold);
     });

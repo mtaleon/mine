@@ -96,6 +96,9 @@ export class Board {
    */
   reveal(x, y) {
     const cell = this.getCellAt(x, y);
+
+    // Don't reveal if cell doesn't exist, already revealed, or flagged
+    // CRITICAL: Flagged cells should never be revealed (UX protection)
     if (!cell || cell.state !== CELL_STATE.COVERED) {
       return { hit: null, revealed: [], gameOver: false };
     }

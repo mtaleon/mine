@@ -314,6 +314,13 @@ body {
   transform: translateY(0);
 }
 
+/* Mobile-only difficulties */
+@media (max-width: 767px) {
+  #difficulty-select option.desktop-only {
+    display: none;
+  }
+}
+
 /* Small mobile adjustments */
 @media (max-width: 400px) {
   .container {

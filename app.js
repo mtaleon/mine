@@ -20,6 +20,12 @@ class MinesweeperApp {
     // Load saved difficulty or default to EASY
     this.currentDifficulty = this.storage.getItem('minesweeper-difficulty') || 'EASY';
 
+    // On mobile, force Easy difficulty
+    const isMobile = window.innerWidth < 768;
+    if (isMobile && (this.currentDifficulty === 'MEDIUM' || this.currentDifficulty === 'HARD')) {
+      this.currentDifficulty = 'EASY';
+    }
+
     // Initialize game with current difficulty
     const difficulty = DIFFICULTY[this.currentDifficulty];
     this.game = new Game(
@@ -70,7 +76,10 @@ class MinesweeperApp {
     const difficultySelect = document.getElementById('difficulty-select');
     if (!difficultySelect) return;
 
-    // Set initial value
+    // Filter difficulties based on screen size
+    this._updateAvailableDifficulties();
+
+    // Set initial value (may be adjusted for mobile)
     difficultySelect.value = this.currentDifficulty;
 
     // Handle difficulty change
@@ -91,6 +100,50 @@ class MinesweeperApp {
       // Start new game
       this.game.start();
     });
+
+    // Update on window resize
+    window.addEventListener('resize', () => {
+      this._updateAvailableDifficulties();
+    });
+  }
+
+  /**
+   * Update available difficulties based on screen size
+   * Mobile (< 768px): Only Easy
+   * Desktop (>= 768px): All difficulties
+   * @private
+   */
+  _updateAvailableDifficulties() {
+    const difficultySelect = document.getElementById('difficulty-select');
+    if (!difficultySelect) return;
+
+    const isMobile = window.innerWidth < 768;
+    const options = difficultySelect.querySelectorAll('option');
+
+    options.forEach(option => {
+      if (option.classList.contains('desktop-only')) {
+        option.style.display = isMobile ? 'none' : '';
+        option.disabled = isMobile;
+      }
+    });
+
+    // If on mobile and Medium/Hard is selected, switch to Easy
+    if (isMobile && (this.currentDifficulty === 'MEDIUM' || this.currentDifficulty === 'HARD')) {
+      this.currentDifficulty = 'EASY';
+      difficultySelect.value = 'EASY';
+      this.storage.setItem('minesweeper-difficulty', 'EASY');
+
+      // Create new game with Easy difficulty
+      const difficulty = DIFFICULTY.EASY;
+      this.game = new Game(
+        this.events,
+        difficulty.rows,
+        difficulty.cols,
+        difficulty.mines,
+        this.storage
+      );
+      this.game.start();
+    }
   }
 
   /**

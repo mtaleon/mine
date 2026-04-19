@@ -1,0 +1,1 @@
+alias deploy="docker exec -ti -w /ci/tmp/aaaa/mine.git kind git push origin main:main"

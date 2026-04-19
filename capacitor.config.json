@@ -1,5 +1,5 @@
 {
-  "appId": "com.minesweeper.game",
+  "appId": "com.octile.minesweeper",
   "appName": "Minesweeper",
   "webDir": "www",
   "bundledWebRuntime": false,

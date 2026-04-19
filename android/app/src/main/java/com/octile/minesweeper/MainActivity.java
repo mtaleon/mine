@@ -1,4 +1,4 @@
-package com.minesweeper.game;
+package com.octile.minesweeper;
 
 import com.getcapacitor.BridgeActivity;
 

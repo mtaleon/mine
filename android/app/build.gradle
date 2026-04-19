@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.minesweeper.game"
+    namespace = "com.octile.minesweeper"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.minesweeper.game"
+        applicationId "com.octile.minesweeper"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

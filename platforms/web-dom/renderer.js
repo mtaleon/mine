@@ -1,6 +1,25 @@
 import { CELL_STATE, NUMBER_COLORS, CELL_COLORS } from '../../core/constants.js';
 
 /**
+ * UI Text Constants - Octile Universe Tone
+ * All modal copy centralized for easy management
+ */
+const UI_TEXT = {
+  WIN_TITLE: 'Completed',
+  WIN_TIME: (time) => `Time: ${time}`,
+  WIN_BEST: (time) => `Best: ${time}`,
+
+  LOSS_TITLE: 'Game Over',
+  LOSS_MESSAGE: 'That was a mine.',
+
+  BUTTON_PLAY_AGAIN: 'Play again',
+
+  PROMO_PREFIX: 'Explore further: ',
+  PROMO_LABEL: 'Octile',
+  PROMO_URL: 'https://octile.app'
+};
+
+/**
  * DOMRenderer - Web DOM implementation of IRenderer
  * Optimized for performance: render board once, update cells individually
  */
@@ -11,6 +30,7 @@ export class DOMRenderer {
     this.minesRemainingElement = null;
     this.timerElement = null;
     this.modalElement = null;
+    this.onNewGame = null; // Callback for new game button
   }
 
   /**
@@ -199,51 +219,116 @@ export class DOMRenderer {
   }
 
   /**
-   * Show win modal
+   * Show win modal - Octile Universe style
    */
   showWinModal(time, bestTime) {
     const formattedTime = this._formatTime(time);
-    const formattedBest = bestTime ? this._formatTime(bestTime) : '--:--';
+    const formattedBestOld = bestTime != null ? this._formatTime(bestTime) : '--:--';
 
-    const isBestTime = bestTime === time;
+    // CRITICAL: bestTime is treated as "previous best"
+    const isBestTime = (bestTime == null) || (time < bestTime);
+    const bestToShow = isBestTime ? formattedTime : formattedBestOld;
 
-    const message = isBestTime
-      ? `🎉 You won in ${formattedTime}!<br>New best time!`
-      : `🎉 You won in ${formattedTime}!<br>Best: ${formattedBest}`;
+    const lines = [
+      UI_TEXT.WIN_TIME(formattedTime),  // Always show current time
+      UI_TEXT.WIN_BEST(bestToShow)       // Always show best (either new or old)
+    ];
 
-    this._showModal('Victory!', message);
+    this._showModal({
+      kind: 'win',
+      title: UI_TEXT.WIN_TITLE,
+      lines: lines
+    });
   }
 
   /**
-   * Show lose modal
+   * Show lose modal - Octile Universe style
    */
   showLoseModal() {
-    this._showModal('Game Over', '💥 You hit a mine!<br>Try again?');
+    this._showModal({
+      kind: 'lose',
+      title: UI_TEXT.LOSS_TITLE,
+      lines: [UI_TEXT.LOSS_MESSAGE]
+    });
   }
 
   /**
-   * Show modal with message
+   * Show modal using DOM API - Octile Universe style
    * @private
    */
-  _showModal(title, message) {
+  _showModal({ kind, title, lines }) {
     // Remove existing modal if any
     this._hideModal();
 
     const modal = document.createElement('div');
     modal.className = 'modal';
-    modal.innerHTML = `
-      <div class="modal-content">
-        <h2>${title}</h2>
-        <p>${message}</p>
-        <button id="modal-new-game">New Game</button>
-      </div>
-    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+
+    // Create title
+    const titleEl = document.createElement('h2');
+    titleEl.textContent = title;  // Safe, no XSS
+    modalContent.appendChild(titleEl);
+
+    // Create message lines (use <p>, not <br>)
+    lines.forEach(line => {
+      const p = document.createElement('p');
+      p.className = 'modal-line';
+      p.textContent = line;
+      modalContent.appendChild(p);
+    });
+
+    // Add Octile promo ONLY on win
+    if (kind === 'win') {
+      const promo = document.createElement('p');
+      promo.className = 'octile-promo';
+
+      const prefix = document.createElement('span');
+      prefix.textContent = UI_TEXT.PROMO_PREFIX;  // "Explore further: "
+      promo.appendChild(prefix);
+
+      const link = document.createElement('a');
+      link.href = UI_TEXT.PROMO_URL;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';  // Security
+      link.textContent = UI_TEXT.PROMO_LABEL;  // "Octile"
+      promo.appendChild(link);
+
+      modalContent.appendChild(promo);
+    }
+
+    // Create button and bind once per creation
+    const button = document.createElement('button');
+    button.id = 'modal-new-game';
+    button.type = 'button';
+    button.textContent = UI_TEXT.BUTTON_PLAY_AGAIN;
+
+    // Bind click directly (prevents duplicate listeners)
+    button.addEventListener('click', () => {
+      modal.classList.remove('show');
+      // Wait for animation to complete before removing
+      setTimeout(() => {
+        this._hideModal();
+        this.onNewGame?.();  // Callback pattern
+      }, 300);
+    });
+
+    modalContent.appendChild(button);
+    modal.appendChild(modalContent);
 
     document.body.appendChild(modal);
     this.modalElement = modal;
 
     // Fade in
     setTimeout(() => modal.classList.add('show'), 10);
+  }
+
+  /**
+   * Set callback for new game button
+   */
+  setNewGameHandler(fn) {
+    this.onNewGame = fn;
   }
 
   /**

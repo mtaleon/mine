@@ -58,6 +58,9 @@ class MinesweeperApp {
     this.renderer.init();
     this.input.init();
 
+    // Wire up new game callback (Octile Universe pattern)
+    this.renderer.setNewGameHandler(() => this.game.reset());
+
     // Setup difficulty selector
     this._setupDifficultySelector();
 
@@ -189,13 +192,11 @@ class MinesweeperApp {
     // Game won
     this.events.on('game:won', (data) => {
       this.renderer.showWinModal(data.time, data.bestTime);
-      this._setupModalResetButton();
     });
 
     // Game lost
     this.events.on('game:lost', () => {
       this.renderer.showLoseModal();
-      this._setupModalResetButton();
     });
 
     // Input events
@@ -212,24 +213,6 @@ class MinesweeperApp {
     });
   }
 
-  /**
-   * Setup modal reset button
-   * @private
-   */
-  _setupModalResetButton() {
-    // Wait for modal to be rendered
-    setTimeout(() => {
-      const modalButton = document.getElementById('modal-new-game');
-      if (modalButton) {
-        modalButton.addEventListener('click', () => {
-          // Hide modal first
-          this.renderer.hideModal();
-          // Then reset game
-          this.game.reset();
-        });
-      }
-    }, 100);
-  }
 }
 
 // Create and initialize app

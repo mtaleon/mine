@@ -7,7 +7,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7986b8 0%, #8b6d9c 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -71,7 +71,7 @@ body {
 
 #difficulty-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #7986b8;
 }
 
 .stat {
@@ -153,9 +153,10 @@ body {
 
 .cell.covered {
   background: linear-gradient(145deg, #d5dde0, #a8b4b8);
-  box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.15),
-              inset 3px 3px 6px rgba(255, 255, 255, 0.8),
-              0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.1),
+              inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+              0 1px 2px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);  /* Subtle separation */
 }
 
 .cell.covered:hover {
@@ -170,16 +171,19 @@ body {
 }
 
 .cell.pressing {
-  background: linear-gradient(145deg, #ffd700, #ffed4e) !important;
-  box-shadow: inset 0 0 8px rgba(255, 215, 0, 0.6),
-              0 0 12px rgba(255, 215, 0, 0.4) !important;
-  transform: scale(0.95) !important;
-  animation: pulse-pressing 0.3s ease-in-out;
+  background: linear-gradient(145deg, #d4cfc9, #e8e3dc) !important;
+  box-shadow:
+    inset 0 0 6px rgba(180, 170, 160, 0.4),
+    0 0 0 2px rgba(120, 110, 100, 0.25),  /* Soft "outline" via shadow */
+    0 0 8px rgba(180, 170, 160, 0.2) !important;
+  filter: contrast(1.05);  /* Slight contrast boost for visibility */
+  transform: scale(0.97) !important;
+  animation: pulse-pressing 0.2s ease-in-out;
 }
 
 @keyframes pulse-pressing {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+  50% { opacity: 0.92; }  /* More subtle pulse */
 }
 
 .cell.revealed {
@@ -277,10 +281,10 @@ body {
   background: white;
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);  /* Softer shadow */
   text-align: center;
   max-width: 90%;
-  animation: modalSlideIn 0.3s ease-out;
+  animation: modalSlideIn 0.25s ease-out;  /* Shorter animation */
 }
 
 @keyframes modalSlideIn {
@@ -308,7 +312,7 @@ body {
 }
 
 .modal-content button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7986b8 0%, #8b6d9c 100%);
   color: white;
   border: none;
   padding: 0.75rem 2rem;

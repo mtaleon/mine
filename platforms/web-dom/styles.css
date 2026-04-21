@@ -45,6 +45,11 @@ body {
   flex-shrink: 0;
   width: fit-content;
   max-width: 90%;
+  transition: opacity 0.6s ease;  /* Smooth fade */
+}
+
+.controls-fade {
+  opacity: 0.35;  /* Subtle but still visible */
 }
 
 .icon {

@@ -67,6 +67,9 @@ class MinesweeperApp {
     // Wire event handlers
     this._wireEvents();
 
+    // Setup toolbar auto-fade for immersion
+    this._setupToolbarAutoFade();
+
     // Start game immediately (no reset click needed)
     this.game.start();
   }
@@ -147,6 +150,50 @@ class MinesweeperApp {
       );
       this.game.start();
     }
+  }
+
+  /**
+   * Setup toolbar auto-fade for immersive gameplay
+   * @private
+   */
+  _setupToolbarAutoFade() {
+    const controls = document.querySelector('.controls');
+    if (!controls) return;
+
+    let fadeTimeout = null;
+    const FADE_DELAY = 4000; // 4 seconds of inactivity
+
+    const fadeOut = () => {
+      controls.classList.add('controls-fade');
+    };
+
+    const fadeIn = () => {
+      controls.classList.remove('controls-fade');
+      clearTimeout(fadeTimeout);
+      fadeTimeout = setTimeout(fadeOut, FADE_DELAY);
+    };
+
+    // Fade in on any user interaction
+    const interactionEvents = ['pointermove', 'pointerdown', 'keydown'];
+    interactionEvents.forEach(event => {
+      document.addEventListener(event, fadeIn, { passive: true });
+    });
+
+    // Fade in when game state changes
+    this.events.on('game:started', fadeIn);
+    this.events.on('cell:revealed', fadeIn);
+    this.events.on('cell:flagged', fadeIn);
+    this.events.on('game:won', () => {
+      controls.classList.remove('controls-fade');
+      clearTimeout(fadeTimeout);
+    });
+    this.events.on('game:lost', () => {
+      controls.classList.remove('controls-fade');
+      clearTimeout(fadeTimeout);
+    });
+
+    // Start fade timer after initial load
+    fadeTimeout = setTimeout(fadeOut, FADE_DELAY);
   }
 
   /**

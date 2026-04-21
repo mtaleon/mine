@@ -16,7 +16,7 @@ const UI_TEXT = {
 
   PROMO_PREFIX: 'Explore further: ',
   PROMO_LABEL: 'Octile',
-  PROMO_URL: 'https://octile.app'
+  PROMO_URL: 'https://play.google.com/store/apps/details?id=com.octile.app'
 };
 
 /**

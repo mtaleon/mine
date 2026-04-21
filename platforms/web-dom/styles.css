@@ -260,7 +260,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.35);  /* Calmer overlay (was 0.5) */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -326,6 +326,87 @@ body {
 
 .modal-content button:active {
   transform: translateY(0);
+}
+
+/* Modal button touch target */
+.modal-content button {
+  min-height: 44px;  /* iOS minimum touch target */
+}
+
+/* Octile cross-promotion styling - minimal, non-intrusive */
+.octile-promo {
+  font-size: 0.85rem;
+  color: #95a5a6;  /* Very muted gray */
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  min-height: 44px;  /* Touch target */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.octile-promo a {
+  color: #7986b8;  /* Calm purple */
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s;
+  margin-left: 0.25rem;  /* Small gap after "Explore further:" */
+}
+
+.octile-promo a:hover {
+  border-bottom-color: #7986b8;
+}
+
+.octile-promo a:focus-visible {
+  outline: 2px solid rgba(121, 134, 184, 0.55);
+  outline-offset: 2px;
+  border-bottom-color: transparent;
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .modal-content {
+    animation: none !important;
+  }
+  .cell.pressing {
+    animation: none !important;
+  }
+}
+
+/* Mobile bottom sheet (Octile Universe - highest impact) */
+@media (max-width: 767px) {
+  .modal {
+    align-items: flex-end;  /* Bottom instead of center */
+  }
+
+  .container {
+    justify-content: flex-start;  /* Board moves up */
+    padding-top: 0.5rem;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    max-height: 55vh;  /* Half screen */
+    overflow: auto;    /* Handle long content */
+    border-radius: 16px 16px 0 0;  /* Rounded top only */
+    margin: 0;
+    /* iOS safe area */
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    animation: slideUpFromBottom 0.28s ease-out;
+  }
+
+  @keyframes slideUpFromBottom {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 }
 
 /* Mobile-only difficulties */

@@ -687,3 +687,119 @@ body {
 .btn-dismiss:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* Help Modal */
+#help-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#help-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#help-modal h3 {
+  color: #41566f;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+#help-modal ul {
+  padding-left: 24px;
+}
+
+#help-modal li {
+  margin: 4px 0;
+}
+
+.help-octile {
+  margin-top: 24px;
+  padding: 12px;
+  background: #f5f5f5;
+  border-left: 3px solid #7986b8;
+}
+
+.help-octile p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* Help Modal Links */
+.help-links {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9em;
+  color: #666;
+}
+
+.help-links a {
+  color: #7986b8;
+  text-decoration: none;
+}
+
+.help-links a:hover {
+  text-decoration: underline;
+}
+
+.help-contact {
+  margin-top: 8px;
+  font-size: 0.85em;
+}
+
+.help-contact-alt {
+  margin-top: 4px;
+  font-size: 0.75em;
+  color: #888;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 20px;
+  text-align: center;
+  background: rgba(44, 62, 80, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8em;
+  color: #bbb;
+  z-index: 100;
+}
+
+.footer-text {
+  margin: 0 0 4px 0;
+}
+
+.footer-links {
+  margin: 0;
+}
+
+.footer-links a {
+  color: #7986b8;
+  text-decoration: none;
+  margin: 0 4px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    font-size: 0.7em;
+    padding: 8px 12px;
+  }
+}

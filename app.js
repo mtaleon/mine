@@ -74,6 +74,9 @@ class MinesweeperApp {
     // Setup language toggle
     this._setupLanguageToggle();
 
+    // Setup help modal
+    this._setupHelpModal();
+
     // Wire event handlers
     this._wireEvents();
 
@@ -175,6 +178,36 @@ class MinesweeperApp {
       const newLang = currentLang === 'en' ? 'zh' : 'en';
       i18n.setLang(newLang);
       this.renderer.applyLanguage();
+    });
+  }
+
+  /**
+   * Setup help modal
+   * @private
+   */
+  _setupHelpModal() {
+    const helpButton = document.getElementById('help-button');
+    const helpModal = document.getElementById('help-modal');
+    const helpClose = document.getElementById('help-close');
+
+    if (!helpButton || !helpModal || !helpClose) return;
+
+    helpButton.addEventListener('click', () => {
+      helpModal.classList.add('show');
+      helpModal.style.display = 'flex';
+    });
+
+    helpClose.addEventListener('click', () => {
+      helpModal.classList.remove('show');
+      helpModal.style.display = 'none';
+    });
+
+    // Close on backdrop click
+    helpModal.addEventListener('click', (e) => {
+      if (e.target === helpModal) {
+        helpModal.classList.remove('show');
+        helpModal.style.display = 'none';
+      }
     });
   }
 

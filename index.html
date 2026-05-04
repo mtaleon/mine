@@ -47,6 +47,8 @@
 
       <button id="reset-button" data-i18n-title="ui.button.newGame" title="New Game">🔄</button>
 
+      <button id="help-button" data-i18n-title="ui.button.help" title="Help">❓</button>
+
       <button id="lang-toggle" data-i18n="lang.toggle" title="Switch Language">中文</button>
 
       <div class="stat">
@@ -57,6 +59,49 @@
 
     <div id="board"></div>
   </div>
+
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2 data-i18n="help.title">How to Play</h2>
+
+      <h3 data-i18n="help.section.goal">Goal</h3>
+      <p data-i18n="help.goal">Reveal all cells without clicking on any mines.</p>
+
+      <h3 data-i18n="help.section.controls">Controls</h3>
+      <ul>
+        <li data-i18n="help.controls.reveal">Left-click to reveal a cell</li>
+        <li data-i18n="help.controls.flag">Right-click to place/remove a flag</li>
+        <li data-i18n="help.controls.numbers">Numbers show how many mines are adjacent to that cell</li>
+      </ul>
+
+      <div class="help-octile">
+        <p data-i18n="help.octile">Looking for deeper puzzles? Octile offers more complex logic challenges.</p>
+      </div>
+
+      <div class="help-links">
+        <p><a href="feedback.html" target="_blank" data-i18n="help.feedback">Feedback</a> · <a href="privacy.html" target="_blank" data-i18n="help.privacy">Privacy</a></p>
+        <p class="help-contact">
+          <span data-i18n="help.contactLabel">Contact:</span>
+          <a href="mailto:octileapp@googlegroups.com">octileapp@googlegroups.com</a>
+        </p>
+        <p class="help-contact-alt" data-i18n="help.contactAlt">If mail app doesn't open, please email us at: octileapp@googlegroups.com</p>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-primary" id="help-close" data-i18n="help.close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-text" data-i18n="branding.footer">An Octile Universe game</p>
+    <p class="footer-links">
+      <a href="https://octile.eu.cc" target="_blank" data-i18n="branding.octileLink">Octile</a> ·
+      <a href="mailto:octileapp@googlegroups.com" data-i18n="footer.contact">Contact</a>
+    </p>
+  </footer>
 
   <!-- App -->
   <script type="module" src="app.js"></script>

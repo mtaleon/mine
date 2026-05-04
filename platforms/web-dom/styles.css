@@ -123,6 +123,28 @@ body {
   transform: scale(0.9);
 }
 
+/* Language toggle button */
+#lang-toggle {
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ecf0f1;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+#lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+#lang-toggle:active {
+  transform: scale(0.95);
+}
+
 /* Board - Mobile first (supports 9x9, 16x16, 30x16) */
 #board {
   width: fit-content;

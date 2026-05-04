@@ -1,23 +1,5 @@
 import { CELL_STATE, NUMBER_COLORS, CELL_COLORS } from '../../core/constants.js';
-
-/**
- * UI Text Constants - Octile Universe Tone
- * All modal copy centralized for easy management
- */
-const UI_TEXT = {
-  WIN_TITLE: 'Completed',
-  WIN_TIME: (time) => `Time: ${time}`,
-  WIN_BEST: (time) => `Best: ${time}`,
-
-  LOSS_TITLE: 'Game Over',
-  LOSS_MESSAGE: 'That was a mine.',
-
-  BUTTON_PLAY_AGAIN: 'Play again',
-
-  PROMO_PREFIX: 'Explore further: ',
-  PROMO_LABEL: 'Octile',
-  PROMO_URL: 'https://play.google.com/store/apps/details?id=com.octile.app'
-};
+import { t } from '../../core/i18n.js';
 
 /**
  * DOMRenderer - Web DOM implementation of IRenderer
@@ -230,13 +212,13 @@ export class DOMRenderer {
     const bestToShow = isBestTime ? formattedTime : formattedBestOld;
 
     const lines = [
-      UI_TEXT.WIN_TIME(formattedTime),  // Always show current time
-      UI_TEXT.WIN_BEST(bestToShow)       // Always show best (either new or old)
+      t('modal.win.time')(formattedTime),  // Always show current time
+      t('modal.win.best')(bestToShow)      // Always show best (either new or old)
     ];
 
     this._showModal({
       kind: 'win',
-      title: UI_TEXT.WIN_TITLE,
+      title: t('modal.win.title'),
       lines: lines
     });
   }
@@ -247,8 +229,8 @@ export class DOMRenderer {
   showLoseModal() {
     this._showModal({
       kind: 'lose',
-      title: UI_TEXT.LOSS_TITLE,
-      lines: [UI_TEXT.LOSS_MESSAGE]
+      title: t('modal.lose.title'),
+      lines: [t('modal.lose.message')]
     });
   }
 
@@ -285,14 +267,14 @@ export class DOMRenderer {
       promo.className = 'octile-promo';
 
       const prefix = document.createElement('span');
-      prefix.textContent = UI_TEXT.PROMO_PREFIX;  // "Explore further: "
+      prefix.textContent = t('promo.prefix');  // "Explore further: "
       promo.appendChild(prefix);
 
       const link = document.createElement('a');
-      link.href = UI_TEXT.PROMO_URL;
+      link.href = t('promo.url');
       link.target = '_blank';
       link.rel = 'noopener noreferrer';  // Security
-      link.textContent = UI_TEXT.PROMO_LABEL;  // "Octile"
+      link.textContent = t('promo.label');  // "Octile"
       promo.appendChild(link);
 
       modalContent.appendChild(promo);
@@ -302,7 +284,7 @@ export class DOMRenderer {
     const button = document.createElement('button');
     button.id = 'modal-new-game';
     button.type = 'button';
-    button.textContent = UI_TEXT.BUTTON_PLAY_AGAIN;
+    button.textContent = t('ui.button.playAgain');
 
     // Bind click directly (prevents duplicate listeners)
     button.addEventListener('click', () => {
@@ -329,6 +311,35 @@ export class DOMRenderer {
    */
   setNewGameHandler(fn) {
     this.onNewGame = fn;
+  }
+
+  /**
+   * Apply language to all elements with data-i18n attributes
+   */
+  applyLanguage() {
+    // Update text content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      el.textContent = t(key);
+    });
+
+    // Update title attributes
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      el.title = t(key);
+    });
+
+    // Update aria-label attributes
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      el.setAttribute('aria-label', t(key));
+    });
+
+    // Update placeholder attributes
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      el.placeholder = t(key);
+    });
   }
 
   /**

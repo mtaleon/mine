@@ -3,6 +3,7 @@ import { Game, LocalStorageAdapter } from './core/game.js';
 import { DOMRenderer } from './platforms/web-dom/renderer.js';
 import { DOMInput } from './platforms/web-dom/input.js';
 import { DIFFICULTY } from './core/constants.js';
+import * as i18n from './core/i18n.js';
 
 /**
  * Minesweeper App - Main application entry point
@@ -11,6 +12,9 @@ import { DIFFICULTY } from './core/constants.js';
 
 class MinesweeperApp {
   constructor() {
+    // Initialize i18n system
+    i18n.init();
+
     // Initialize event bus
     this.events = new EventBus();
 
@@ -58,11 +62,17 @@ class MinesweeperApp {
     this.renderer.init();
     this.input.init();
 
+    // Apply initial language to UI
+    this.renderer.applyLanguage();
+
     // Wire up new game callback (Octile Universe pattern)
     this.renderer.setNewGameHandler(() => this.game.reset());
 
     // Setup difficulty selector
     this._setupDifficultySelector();
+
+    // Setup language toggle
+    this._setupLanguageToggle();
 
     // Wire event handlers
     this._wireEvents();
@@ -150,6 +160,22 @@ class MinesweeperApp {
       );
       this.game.start();
     }
+  }
+
+  /**
+   * Setup language toggle button
+   * @private
+   */
+  _setupLanguageToggle() {
+    const langToggle = document.getElementById('lang-toggle');
+    if (!langToggle) return;
+
+    langToggle.addEventListener('click', () => {
+      const currentLang = i18n.getLang();
+      const newLang = currentLang === 'en' ? 'zh' : 'en';
+      i18n.setLang(newLang);
+      this.renderer.applyLanguage();
+    });
   }
 
   /**

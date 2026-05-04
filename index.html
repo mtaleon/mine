@@ -31,12 +31,14 @@
       <span class="icon">💣</span>
 
       <select id="difficulty-select">
-        <option value="EASY">Easy</option>
-        <option value="MEDIUM" class="desktop-only">Medium</option>
-        <option value="HARD" class="desktop-only">Hard</option>
+        <option value="EASY" data-i18n="difficulty.easy">Easy</option>
+        <option value="MEDIUM" class="desktop-only" data-i18n="difficulty.medium">Medium</option>
+        <option value="HARD" class="desktop-only" data-i18n="difficulty.hard">Hard</option>
       </select>
 
-      <button id="reset-button" title="New Game">🔄</button>
+      <button id="reset-button" data-i18n-title="ui.button.newGame" title="New Game">🔄</button>
+
+      <button id="lang-toggle" data-i18n="lang.toggle" title="Switch Language">中文</button>
 
       <div class="stat">
         <span>⏱️</span>

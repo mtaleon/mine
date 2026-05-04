@@ -21,6 +21,15 @@
   <link rel="stylesheet" href="platforms/web-dom/styles.css">
 </head>
 <body>
+  <!-- OTA Update Banner -->
+  <div id="update-banner">
+    <p id="update-text"></p>
+    <div class="update-actions">
+      <button class="btn-update" id="update-btn">Update</button>
+      <button class="btn-dismiss" id="update-dismiss">Later</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="controls">
       <div class="stat">
@@ -54,7 +63,8 @@
 
   <!-- Service Worker -->
   <script>
-    if ('serviceWorker' in navigator) {
+    // Register SW only on web (not file://)
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       navigator.serviceWorker.register('sw.js').catch(() => {
         // Ignore service worker errors
       });

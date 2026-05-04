@@ -1,0 +1,11 @@
+{
+  "features": {
+    "health": true,
+    "score_submission": true,
+    "admob_banner": false,
+    "admob_interstitial": false,
+    "ota_updates": true
+  },
+  "workerUrl": "https://api.octile.eu.cc",
+  "siteUrl": "https://mine.octile.eu.cc/"
+}

@@ -1,0 +1,12 @@
+{
+  "otaVersionCode": 1,
+  "otaVersionName": "2026.05.04-1",
+  "minAndroidVersionCode": 0,
+  "playStoreUrl": "https://play.google.com/store/apps/details?id=com.octile.mine",
+  "bundleUrl": "https://mine.octile.eu.cc/ota/bundle-v1.zip",
+  "bundleHash": "",
+  "releaseNotes": {
+    "en": "Initial release",
+    "zh": "首次發布"
+  }
+}

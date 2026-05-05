@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 apply plugin: 'com.android.application'
 
 android {
@@ -16,10 +19,47 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    signingConfigs {
+        release {
+            // Support both local keystore.properties and CI environment variables
+            def keystorePropertiesFile = rootProject.file('keystore.properties')
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            } else if (System.getenv('KEYSTORE_PASSWORD')) {
+                // CI: keystore decoded to android/app/release.keystore
+                storeFile file('release.keystore')
+                storePassword System.getenv('KEYSTORE_PASSWORD')
+                keyAlias System.getenv('KEY_ALIAS')
+                keyPassword System.getenv('KEY_PASSWORD') ?: System.getenv('KEYSTORE_PASSWORD')
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+// Fail fast: prevent debug-signed releases
+// RECOMMENDED: Strict only on CI (allows local lintRelease without keystore)
+// To make strict always: remove the 'onCI &&' condition
+gradle.taskGraph.whenReady { graph ->
+    def onCI = System.getenv("GITHUB_ACTIONS") == "true" || System.getenv("CI") == "true"
+    def isReleaseTask = graph.allTasks.any { it.name.toLowerCase().contains('release') }
+    if (onCI && isReleaseTask) {
+        def sc = android.signingConfigs.release
+        if (sc.storeFile == null || !sc.storeFile.exists() || sc.storePassword == null || sc.keyAlias == null || sc.keyPassword == null) {
+            throw new GradleException("Missing release signing config. Provide keystore.properties or CI env secrets + decoded release.keystore.")
         }
     }
 }

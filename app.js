@@ -4,6 +4,8 @@ import { DOMRenderer } from './platforms/web-dom/renderer.js';
 import { DOMInput } from './platforms/web-dom/input.js';
 import { DIFFICULTY } from './core/constants.js';
 import * as i18n from './core/i18n.js';
+import { submitScore } from './core/api.js';
+import { getBrowserUUID } from './core/uuid.js';
 
 /**
  * Minesweeper App - Main application entry point
@@ -298,6 +300,26 @@ class MinesweeperApp {
     // Game won
     this.events.on('game:won', (data) => {
       this.renderer.showWinModal(data.time, data.bestTime);
+
+      // Submit score to unified backend
+      const difficultyMap = {
+        [DIFFICULTY.EASY]: 'EASY',
+        [DIFFICULTY.MEDIUM]: 'MEDIUM',
+        [DIFFICULTY.HARD]: 'HARD'
+      };
+      submitScore({
+        completion_time: data.time,
+        difficulty: difficultyMap[this.game.difficulty] || 'MEDIUM',
+        mines: this.game.mineCount,
+        rows: this.game.rows,
+        cols: this.game.cols,
+        browser_uuid: getBrowserUUID(),
+        timestamp_utc: new Date().toISOString(),
+        platform: window.Capacitor?.getPlatform?.() || 'web',
+        ota_version_code: window.otaVersion || 0,
+        app_version: 1,
+        build_channel: window.Capacitor?.isNativePlatform?.() ? 'store' : 'web'
+      }).catch(e => console.warn('Score submission error:', e));
     });
 
     // Game lost

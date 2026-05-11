@@ -113,29 +113,41 @@ jobs:
       contents: write
 
     steps:
-      - name: Download release APK
+      - name: Download debug APK
         uses: actions/download-artifact@v4
         with:
-          name: app-release-apk
-          path: artifacts/
+          name: app-debug
+          path: artifacts/debug/
 
       - name: Download release AAB
         uses: actions/download-artifact@v4
         with:
           name: app-release-bundle
-          path: artifacts/
+          path: artifacts/aab/
+
+      - name: Verify downloaded artifacts
+        run: |
+          echo "=== All downloaded files ==="
+          find artifacts -type f \( -name "*.apk" -o -name "*.aab" \) -maxdepth 4 -exec ls -lh {} \;
+          echo ""
+          echo "=== Summary ==="
+          echo "Debug APKs: $(find artifacts/debug -name "*.apk" 2>/dev/null | wc -l)"
+          echo "AABs: $(find artifacts/aab -name "*.aab" 2>/dev/null | wc -l)"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/*
+          files: |
+            artifacts/debug/*.apk
+            artifacts/aab/*.aab
           body: |
             ## Android Release
 
             **Play Store**: Upload the `.aab` file to Play Console (manual upload required)
-            **Sideload**: Install the `.apk` file directly
+            **Debug APK**: Development build for testing (debugging enabled)
 
-            ⚠️ Note: Creating this GitHub Release does NOT publish to Google Play.
-            The `.aab` must still be uploaded manually to Play Console.
+            ⚠️ **Important Notes:**
+            - Creating this GitHub Release does NOT publish to Google Play. The `.aab` must still be uploaded manually to Play Console.
+            - Debug APK may not install over the Play Store version (different signing key). Uninstall the Play Store version first if needed.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

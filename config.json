@@ -7,5 +7,6 @@
     "ota_updates": true
   },
   "workerUrl": "https://api.octile.eu.cc",
-  "siteUrl": "https://mine.octile.eu.cc/"
+  "siteUrl": "https://mine.octile.eu.cc/",
+  "supportEmail": "octileapp+mine@googlegroups.com"
 }

@@ -41,10 +41,10 @@ const translations = {
     'help.octile': 'If you enjoy logical deduction puzzles, Octile offers deeper spatial reasoning challenges.',
     'help.close': 'Close',
     'help.contactLabel': 'Contact:',
-    'help.contactAlt': 'If mail app doesn\'t open, please email us at: octileapp@googlegroups.com',
+    'help.contactAlt': 'If mail app doesn\'t open, please email us at: octileapp+mine@googlegroups.com',
 
     // Contact
-    'contact.email': 'octileapp@googlegroups.com',
+    'contact.email': 'octileapp+mine@googlegroups.com',
     'footer.contact': 'Contact',
 
     // Privacy & Feedback (to be added)
@@ -115,10 +115,10 @@ const translations = {
     'help.octile': '如果你喜歡邏輯推理遊戲，Octile 提供更深入的空間推理挑戰。',
     'help.close': '關閉',
     'help.contactLabel': '聯絡：',
-    'help.contactAlt': '如果郵件應用程式無法開啟，請發送郵件至：octileapp@googlegroups.com',
+    'help.contactAlt': '如果郵件應用程式無法開啟，請發送郵件至：octileapp+mine@googlegroups.com',
 
     // Contact
-    'contact.email': 'octileapp@googlegroups.com',
+    'contact.email': 'octileapp+mine@googlegroups.com',
     'footer.contact': '聯絡',
 
     // Privacy & Feedback

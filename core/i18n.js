@@ -47,11 +47,13 @@ const translations = {
     'contact.email': 'octileapp+mine@googlegroups.com',
     'footer.contact': 'Contact',
 
-    // Privacy & Feedback (to be added)
+    // Privacy & Feedback
     'privacy.title': 'Privacy Policy',
     'feedback.title': 'Send Feedback',
     'feedback.emailLabel': 'Email (optional)',
     'feedback.messageLabel': 'Message',
+    'help.feedback': 'Feedback',
+    'help.privacy': 'Privacy',
     'feedback.submit': 'Send',
     'feedback.screenshotLabel': 'Screenshot (optional)',
 
@@ -128,6 +130,8 @@ const translations = {
     'feedback.messageLabel': '訊息',
     'feedback.submit': '傳送',
     'feedback.screenshotLabel': '螢幕截圖（選填）',
+    'help.feedback': '意見回饋',
+    'help.privacy': '隱私政策',
 
     // OTA banner
     'ota.updateAvailable': '可用更新',
